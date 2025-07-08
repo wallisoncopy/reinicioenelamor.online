@@ -4,846 +4,557 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planilha de Controle Financeiro - Motoristas de Aplicativo</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: #fff;
-            background: linear-gradient(135deg, #000000, #1a1a1a);
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #000000, #1a1a1a);
-            color: white;
-            text-align: center;
-            padding: 40px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-            position: relative;
-            z-index: 2;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Video Section - Moved to top */
-        .video-section {
-            background: linear-gradient(135deg, #1a1a1a, #000000);
-            padding: 40px 0;
-            text-align: center;
-            border-bottom: 2px solid #333;
-        }
-
-        .video-section h2 {
-            font-size: 2rem;
-            margin-bottom: 30px;
-            color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-        }
-
-        .video-container {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.25%;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
-            border: 3px solid #00d4ff;
-            animation: borderGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes borderGlow {
-            0% {
-                border-color: #00d4ff;
-                box-shadow: 0 0 30px rgba(0, 212, 255, 0.3), 0 0 60px rgba(0, 212, 255, 0.1);
-            }
-            100% {
-                border-color: #00ffff;
-                box-shadow: 0 0 30px rgba(0, 255, 255, 0.6), 0 0 60px rgba(0, 255, 255, 0.3);
-            }
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Offers Section */
-        .offers-section {
-            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
-            padding: 60px 0;
-            text-align: center;
-            position: relative;
-        }
-
-        .offers-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 2px,
-                rgba(255, 255, 255, 0.02) 2px,
-                rgba(255, 255, 255, 0.02) 4px
-            );
-        }
-
-        .offers-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            color: #ffffff;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-            position: relative;
-            z-index: 2;
-        }
-
-        .offers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-            margin-top: 40px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .offer-card {
-            background: linear-gradient(135deg, #333, #1a1a1a);
-            padding: 40px 30px;
-            border-radius: 20px;
-            border: 2px solid #444;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .offer-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .offer-card:hover {
-            transform: translateY(-10px);
-            border-color: #666;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
-        }
-
-        .offer-card:hover::before {
-            opacity: 1;
-        }
-
-        .offer-price {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #00d4ff;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-        }
-
-        .offer-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #ffffff;
-        }
-
-        .offer-features {
-            text-align: left;
-            margin-bottom: 30px;
-        }
-
-        .offer-features li {
-            list-style: none;
-            padding: 8px 0;
-            color: #ccc;
-            position: relative;
-            padding-left: 25px;
-        }
-
-        .offer-features li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: #00d4ff;
-            font-weight: bold;
-        }
-
-        .offer-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #00d4ff, #0099cc);
-            color: #000;
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            text-decoration: none;
-            border-radius: 50px;
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
-            transition: all 0.3s ease;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .offer-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5);
-            background: linear-gradient(135deg, #00e6ff, #00b8e6);
-        }
-
-        /* Problem Section */
-        .problem-section {
-            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-            padding: 60px 0;
-            text-align: center;
-        }
-
-        .problem-section h2 {
-            font-size: 2rem;
-            margin-bottom: 30px;
-            color: #00d4ff;
-            text-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-        }
-
-        .problem-section p {
-            font-size: 1.1rem;
-            max-width: 800px;
-            margin: 0 auto 20px;
-            color: #ccc;
-        }
-
-        /* Benefits Section */
-        .benefits-section {
-            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
-            padding: 60px 0;
-        }
-
-        .benefits-section h2 {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 40px;
-            color: #00d4ff;
-            text-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-        }
-
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .benefit-item {
-            background: linear-gradient(135deg, #333, #1a1a1a);
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid #444;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .benefit-item:hover {
-            transform: translateY(-5px);
-            border-color: #00d4ff;
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
-        }
-
-        .benefit-item .icon {
-            font-size: 2rem;
-            color: #00d4ff;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-        }
-
-        .benefit-item h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .benefit-item p {
-            color: #ccc;
-        }
-
-        /* Product Preview */
-        .preview-section {
-            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-            padding: 60px 0;
-            text-align: center;
-        }
-
-        .preview-section h2 {
-            font-size: 2rem;
-            margin-bottom: 40px;
-            color: #00d4ff;
-            text-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-        }
-
-        .preview-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
-            margin: 20px 0;
-            border: 2px solid #444;
-        }
-
-        /* Testimonials */
-        .testimonials-section {
-            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
-            padding: 60px 0;
-        }
-
-        .testimonials-section h2 {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 40px;
-            color: #00d4ff;
-            text-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .testimonial {
-            background: linear-gradient(135deg, #333, #1a1a1a);
-            padding: 30px;
-            border-radius: 15px;
-            border-left: 4px solid #00d4ff;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .testimonial p {
-            font-style: italic;
-            margin-bottom: 15px;
-            color: #ccc;
-        }
-
-        .testimonial .author {
-            font-weight: bold;
-            color: #fff;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            background: linear-gradient(135deg, #00d4ff, #0099cc);
-            color: #000;
-            text-align: center;
-            padding: 80px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-            animation: pulse 3s ease-in-out infinite;
-        }
-
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .cta-section p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #000, #333);
-            color: #00d4ff;
-            padding: 20px 40px;
-            font-size: 1.3rem;
-            text-decoration: none;
-            border-radius: 50px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-            font-weight: bold;
-            position: relative;
-            z-index: 2;
-            text-transform: uppercase;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
-            background: linear-gradient(135deg, #333, #666);
-        }
-
-        /* FAQ Section */
-        .faq-section {
-            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-            padding: 60px 0;
-        }
-
-        .faq-section h2 {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 40px;
-            color: #00d4ff;
-            text-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-        }
-
-        .faq-item {
-            background: linear-gradient(135deg, #333, #1a1a1a);
-            margin-bottom: 20px;
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid #444;
-        }
-
-        .faq-question {
-            background: linear-gradient(135deg, #00d4ff, #0099cc);
-            color: #000;
-            padding: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .faq-question:hover {
-            background: linear-gradient(135deg, #00e6ff, #00b8e6);
-        }
-
-        .faq-answer {
-            padding: 20px;
-            display: none;
-            color: #ccc;
-        }
-
-        .faq-answer.active {
-            display: block;
-        }
-
-        /* Footer */
-        .footer {
-            background: #000;
-            color: white;
-            text-align: center;
-            padding: 40px 0;
-            border-top: 2px solid #333;
-        }
-
-        .footer p {
-            margin-bottom: 10px;
-        }
-
-        .footer a {
-            color: #00d4ff;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .header p {
-                font-size: 1rem;
-            }
-
-            .benefits-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .offers-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-section h2 {
-                font-size: 2rem;
-            }
-
-            .cta-button {
-                padding: 15px 30px;
-                font-size: 1.1rem;
-            }
-
-            .offer-price {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
+    <title>Quiz: Descubra se está sendo traído(a)</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
-    <section class="header">
+    <!-- Barra de Progresso -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- Página Inicial -->
+    <div class="page active" id="page-start">
         <div class="container">
-            <h1>🚗 Você sabe quanto realmente está ganhando por mês?</h1>
-            <p>Descubra a planilha que está transformando a vida financeira de motoristas de aplicativo</p>
-        </div>
-    </section>
-
-    <!-- Video Section - Moved to top -->
-    <section class="video-section">
-        <div class="container">
-            <h2>Veja a Planilha em Ação</h2>
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/ATL3rX5tF_I" frameborder="0" allowfullscreen></iframe>
-            </div>
-            <a href="#offers" class="cta-button" style="margin-top: 30px; display: inline-block;">Role a Página Para Baixo e Garanta Por R$10,00</a>
-        </div>
-    </section>
-
-    
-
-    <!-- Problem Section -->
-    <section class="problem-section">
-        <div class="container">
-            <h2>O Problema que Todo Motorista Enfrenta</h2>
-            <p>Como motorista de aplicativo, você trabalha longas horas, mas no final do mês sempre se pergunta: "Onde foi parar meu dinheiro?"</p>
-            <p>Sem controle financeiro adequado, é impossível saber se você está realmente lucrando ou apenas cobrindo os custos operacionais.</p>
-            <p>Muitos motoristas descobrem tarde demais que estão trabalhando "no vermelho" - gastando mais do que ganham.</p>
-            <p><strong>Nossa planilha resolve exatamente isso!</strong></p>
-        </div>
-    </section>
-
-    <!-- Benefits Section -->
-    <section class="benefits-section">
-        <div class="container">
-            <h2>Como Nossa Planilha Vai Transformar Suas Finanças</h2>
-            <div class="benefits-grid">
-                <div class="benefit-item">
-                    <div class="icon">✅</div>
-                    <h3>Controle Total de Entradas e Saídas</h3>
-                    <p>Registre todos os ganhos e gastos de forma simples e organizada</p>
+            <div class="hero-section">
+                <div class="hero-image">
+                    <svg class="main-icon" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Homem -->
+                        <g class="man">
+                            <circle cx="120" cy="80" r="30" fill="#4A90E2" stroke="#2E5A8A" stroke-width="2"/>
+                            <rect x="90" y="110" width="60" height="80" rx="10" fill="#2E5A8A"/>
+                            <rect x="85" y="115" width="15" height="50" rx="7" fill="#2E5A8A"/>
+                            <rect x="140" y="115" width="15" height="50" rx="7" fill="#2E5A8A"/>
+                            <rect x="95" y="185" width="15" height="40" rx="7" fill="#2E5A8A"/>
+                            <rect x="130" y="185" width="15" height="40" rx="7" fill="#2E5A8A"/>
+                            <!-- Rosto -->
+                            <circle cx="110" cy="75" r="3" fill="#FFFFFF"/>
+                            <circle cx="130" cy="75" r="3" fill="#FFFFFF"/>
+                            <path d="M 115 85 Q 120 90 125 85" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+                        </g>
+                        
+                        <!-- Mulher -->
+                        <g class="woman">
+                            <circle cx="280" cy="80" r="30" fill="#E91E63" stroke="#AD1457" stroke-width="2"/>
+                            <rect x="250" y="110" width="60" height="80" rx="10" fill="#AD1457"/>
+                            <rect x="245" y="115" width="15" height="50" rx="7" fill="#AD1457"/>
+                            <rect x="300" y="115" width="15" height="50" rx="7" fill="#AD1457"/>
+                            <rect x="255" y="185" width="15" height="40" rx="7" fill="#AD1457"/>
+                            <rect x="290" y="185" width="15" height="40" rx="7" fill="#AD1457"/>
+                            <!-- Cabelo -->
+                            <path d="M 255 55 Q 280 45 305 55 Q 300 65 280 70 Q 260 65 255 55" fill="#8E24AA"/>
+                            <!-- Rosto -->
+                            <circle cx="270" cy="75" r="3" fill="#FFFFFF"/>
+                            <circle cx="290" cy="75" r="3" fill="#FFFFFF"/>
+                            <path d="M 275 85 Q 280 90 285 85" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+                        </g>
+                        
+                        <!-- Coração Partido -->
+                        <g class="broken-heart">
+                            <path d="M 200 120 C 190 110, 170 110, 170 130 C 170 150, 200 170, 200 170 C 200 170, 230 150, 230 130 C 230 110, 210 110, 200 120 Z" fill="#FF6B6B"/>
+                            <!-- Rachadura -->
+                            <path d="M 200 120 L 195 140 L 205 150 L 195 160 L 200 170" stroke="#8B0000" stroke-width="3" fill="none"/>
+                            <path d="M 200 120 L 205 140 L 195 150 L 205 160 L 200 170" stroke="#8B0000" stroke-width="3" fill="none"/>
+                            <!-- Fragmentos -->
+                            <circle cx="185" cy="125" r="2" fill="#8B0000"/>
+                            <circle cx="215" cy="135" r="2" fill="#8B0000"/>
+                            <circle cx="190" cy="155" r="1.5" fill="#8B0000"/>
+                            <circle cx="210" cy="145" r="1.5" fill="#8B0000"/>
+                        </g>
+                        
+                        <!-- Texto -->
+                        <text x="200" y="250" text-anchor="middle" fill="#FFD93D" font-size="24" font-weight="bold">E DESCUBRA SE ESTÁ</text>
+                        <text x="200" y="280" text-anchor="middle" fill="#FF6B6B" font-size="24" font-weight="bold">SENDO TRAÍDO(A)</text>
+                    </svg>
                 </div>
-                <div class="benefit-item">
-                    <div class="icon">✅</div>
-                    <h3>Lucro Diário, Semanal e Mensal</h3>
-                    <p>Veja exatamente quanto você está ganhando em cada período</p>
+                <h1 class="title">🚨 Responda 15 perguntas e descubra se está sendo traído(a) em silêncio…</h1>
+                <p class="subtitle">Este quiz usa inteligência comportamental avançada para revelar a verdade por trás de atitudes suspeitas do seu cônjuge.</p>
+                <div class="benefits">
+                    <div class="benefit">✓ Análise comportamental profissional</div>
+                    <div class="benefit">✓ Resultado em menos de 3 minutos</div>
+                    <div class="benefit">✓ 94% de precisão comprovada</div>
                 </div>
-                <div class="benefit-item">
-                    <div class="icon">✅</div>
-                    <h3>Decisão Inteligente para Rodar</h3>
-                    <p>Saiba quando vale a pena sair para trabalhar baseado em dados reais</p>
+                <button class="btn-primary" onclick="nextPage()">
+                    <i class="fas fa-play"></i> INICIAR TESTE GRATUITO
+                </button>
+                <div class="social-proof">
+                    <p>+ de 50.000 pessoas já descobriram a verdade</p>
                 </div>
-                <div class="benefit-item">
-                    <div class="icon">✅</div>
-                    <h3>Planejamento de Combustível</h3>
-                    <p>Controle seus gastos com combustível e manutenção do veículo</p>
-                </div>
-                <div class="benefit-item">
-                    <div class="icon">✅</div>
-                    <h3>Relatórios Automáticos</h3>
-                    <p>Gráficos e relatórios que mostram sua evolução financeira</p>
-                </div>
-                <div class="benefit-item">
-                    <div class="icon">✅</div>
-                    <h3>Fácil de Usar</h3>
-                    <p>Interface simples, funciona no celular, tablet e computador</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Product Preview -->
-    <section class="preview-section">
-        <div class="container">
-            <h2>NÃO PRECISA BAIXAR E FUNCIONA DIRETO NO SEU NAVEGADOR</h2>
-            <img src="https://via.placeholder.com/600x300/00d4ff/000000?text=Planilha+de+Controle+Financeiro" alt="Planilha de Controle Financeiro" class="preview-image">
-            <p>Interface simples e intuitiva para controlar suas finanças como motorista</p>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials-section">
-        <div class="container">
-            <h2>O Que Nossos Clientes Estão Dizendo</h2>
-            <div class="testimonials-grid">
-                <div class="testimonial">
-                    <p>"Antes eu achava que estava ganhando bem, mas com a planilha descobri que estava no prejuízo. Agora consigo controlar tudo e já aumentei meu lucro em 40%!"</p>
-                    <div class="author">- João M., Motorista Uber há 3 anos</div>
-                </div>
-                <div class="testimonial">
-                    <p>"A planilha me ajudou a organizar minha vida financeira. Agora sei exatamente quando vale a pena sair para rodar e quando é melhor ficar em casa."</p>
-                    <div class="author">- Larissa P., Motorista 99 e Uber</div>
-                </div>
-                <div class="testimonial">
-                    <p>"Simplesmente incrível! Em 2 meses já consegui economizar o suficiente para fazer a manutenção do carro sem apertar o orçamento."</p>
-                    <div class="author">- Carlos T., Motorista há 5 anos</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-     <!-- Offers -->
-<section id="ofertas" class="section offer">
-    <div class="container">
-        <h2>Escolha Sua Oferta Especial</h2>
-        <div class="offers-grid">
-            <!-- Oferta Básica -->
-            <div class="offer-card basic">
-                <div class="offer-header">
-                    <h3>PLANO BÁSICO</h3>
-                    <div class="offer-price">
-                        <span class="price-currency">R$</span>
-                        <span class="price-value">10</span>
-                        <span class="price-period">,00</span>
-                    </div>
-                </div>
-                <div class="offer-benefits">
-                    <h4>✅ O que você recebe:</h4>
-                    <ul>
-                        <li>📊 Planilha completa de controle financeiro</li>
-                        <li>📅 Controle de ganhos diários</li>
-                        <li>📈 Relatórios semanais</li>
-                        <li>💬 Suporte via WhatsApp</li>
-                        <li>🔄 Atualizações por 6 meses</li>
-                    </ul>
-                </div>
-                <a href="https://paypagamentostx3.shop/checkout-dark-6987/?add-to-cart=6987" class="cta-button basic-btn">QUERO O PLANO BÁSICO</a>
-            </div>
-
-            <!-- Oferta Premium -->
-            <div class="offer-card premium">
-                <div class="offer-badge">MAIS COMPLETO</div>
-                <div class="offer-header">
-                    <h3>PLANO PREMIUM</h3>
-                    <div class="offer-price">
-                        <span class="original-price-small"></span>
-                        <div>
-                            <span class="price-currency">R$</span>
-                            <span class="price-value">19</span>
-                            <span class="price-period">,90</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="offer-benefits">
-                    <h4>✅ Tudo do Básico +</h4>
-                    <ul>
-                        <li>📊 Análise de rentabilidade por app</li>
-                        <li>🔮 Projeções de ganhos futuros</li>
-                        <li>🎯 Calculadora de metas</li>
-                        <li>🎥 Vídeos tutoriais exclusivos</li>
-                        <li>🚀 Suporte prioritário</li>
-                        <li>♾️ Atualizações vitalícias</li>
-                    </ul>
-                    <div class="savings">
-                        <strong>💰 Economia de R$ 69,10</strong>
-                    </div>
-                </div>
-                <a href="https://paypagamentostx3.shop/checkout-dark-6972/?add-to-cart=6972" class="cta-button premium-btn">QUERO O PLANO PREMIUM</a>
             </div>
         </div>
     </div>
-</section>
 
-
-    <!-- CTA Section -->
-    <section class="cta-section">
+    <!-- Página Nome -->
+    <div class="page" id="page-name">
         <div class="container">
-            <h2>Transforme Sua Vida Financeira Hoje!</h2>
-            <p>Pare de trabalhar no escuro. Tenha controle total dos seus ganhos como motorista.</p>
-            <a href="https://paypagamentostx3.shop/checkout-dark-6972/?add-to-cart=6972" class="cta-button">Quero Controlar Meus Ganhos Agora!</a>
+            <div class="question-section">
+                <h2>👤 Qual o seu nome?</h2>
+                <p class="question-subtitle">(Não será revelado a ninguém)</p>
+                <input type="text" id="userName" class="name-input" placeholder="Digite seu nome aqui...">
+                <button class="btn-primary" onclick="saveName()">
+                    <i class="fas fa-arrow-right"></i> Continuar
+                </button>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <!-- FAQ Section -->
-    <section class="faq-section">
+    <!-- Páginas das Perguntas -->
+    <div class="page" id="page-q1">
         <div class="container">
-            <h2>Perguntas Frequentes</h2>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    A planilha funciona no celular?
-                </div>
-                <div class="faq-answer">
-                    Sim! A planilha foi desenvolvida para funcionar perfeitamente no celular, tablet e computador. Você pode atualizar seus dados em qualquer lugar.
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    Preciso ter conhecimentos avançados para usar?
-                </div>
-                <div class="faq-answer">
-                    Não! A planilha é super simples de usar. Se você sabe mexer no WhatsApp, consegue usar nossa planilha. Além disso, fornecemos um tutorial completo.
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    Tem garantia?
-                </div>
-                <div class="faq-answer">
-                    Sim! Oferecemos 30 dias de garantia total. Se não ficar satisfeito, devolvemos 100% do seu dinheiro, sem perguntas.
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    A planilha funciona para todos os aplicativos?
-                </div>
-                <div class="faq-answer">
-                    Sim! Funciona para Uber, 99, inDrive, Cabify e qualquer outro aplicativo de transporte. Você pode controlar ganhos de múltiplas plataformas.
+            <div class="question-section">
+                <div class="question-icon">📱</div>
+                <h2>A pessoa começou a esconder o celular ou colocou senha recentemente?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q1', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q1', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q1', 'as-vezes')">Às vezes</button>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer class="footer">
+    <div class="page" id="page-q2">
         <div class="container">
-            <p>&copy; 2025 Planilha Controle Financeiro para Motoristas. Todos os direitos reservados.</p>
-            <p>
-                <a href="#termos">Termos de Uso</a> | 
-                <a href="#privacidade">Política de Privacidade</a>
-            </p>
+            <div class="question-section">
+                <div class="question-icon">🥶</div>
+                <h2>O comportamento do seu cônjuge mudou de repente (mais frio(a), distante ou irritado(a))?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q2', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q2', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q2', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
         </div>
-    </footer>
+    </div>
 
-    
+    <div class="page" id="page-q3">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">🚫</div>
+                <h2>Seu cônjuge evita contato físico ou dá desculpas para o sexo?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q3', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q3', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q3', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        function toggleFaq(element) {
-            const answer = element.nextElementSibling;
-            const isActive = answer.classList.contains('active');
-            
-            // Close all FAQ answers
-            document.querySelectorAll('.faq-answer').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Open clicked FAQ if it wasn't active
-            if (!isActive) {
-                answer.classList.add('active');
-            }
-        }
+    <div class="page" id="page-q4">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">🚪</div>
+                <h2>Seu cônjuge está saindo com mais frequência e sem explicar direito?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q4', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q4', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q4', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        
+    <div class="page" id="page-q5">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">🤥</div>
+                <h2>Já pegou alguma mentira sobre onde estava ou com quem estava?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q5', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q5', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q5', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+    <div class="page" id="page-q6">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">💄</div>
+                <h2>Seu cônjuge começou a se cuidar mais do que o normal sem motivo claro?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q6', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q6', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q6', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Add animation on scroll
-        const sectionObserverOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+    <div class="page" id="page-q7">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">🛡️</div>
+                <h2>Seu cônjuge fica na defensiva quando você faz perguntas simples?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q7', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q7', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q7', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, sectionObserverOptions);
+    <div class="page" id="page-q8">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">🏃</div>
+                <h2>Seu cônjuge tem passado mais tempo fora de casa ou longe de você?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q8', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q8', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q8', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Observe all sections
-        document.querySelectorAll('section').forEach(section => {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(20px)';
-            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            sectionObserver.observe(section);
-        });
+    <div class="page" id="page-q9">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">👥</div>
+                <h2>Seu cônjuge evita sair com você em público ou te apresentar para amigos?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q9', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q9', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q9', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        
-    </script>
+    <div class="page" id="page-q10">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">💬</div>
+                <h2>As conversas ficaram mais curtas, secas ou sem emoção?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q10', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q10', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q10', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page" id="page-q11">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">👁️</div>
+                <h2>Você sente que tem alguém estranho acompanhando suas redes sociais?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q11', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q11', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q11', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page" id="page-q12">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">😔</div>
+                <h2>Seu(sua) parceiro(a) parece mais feliz longe de você do que ao seu lado?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q12', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q12', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q12', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page" id="page-q13">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">🌙</div>
+                <h2>Seu cônjuge tem chegado tarde em casa com frequência ou inventado compromissos noturnos?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q13', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q13', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q13', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page" id="page-q14">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">💸</div>
+                <h2>Notou gastos estranhos ou dinheiro sendo usado sem explicação clara?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q14', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q14', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q14', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page" id="page-q15">
+        <div class="container">
+            <div class="question-section">
+                <div class="question-icon">💔</div>
+                <h2>Seu instinto grita que algo está errado, mesmo sem provas concretas?</h2>
+                <div class="answer-buttons">
+                    <button class="btn-answer" onclick="answer('q15', 'sim')">Sim</button>
+                    <button class="btn-answer" onclick="answer('q15', 'nao')">Não</button>
+                    <button class="btn-answer" onclick="answer('q15', 'as-vezes')">Às vezes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página da Ferramenta Hacker -->
+    <div class="page" id="page-hacker-tool">
+        <div class="container">
+            <div class="hacker-section">
+                <div class="hacker-icon">🕵️‍♂️</div>
+                <h1 class="hacker-title">NOVA FERRAMENTA REVOLUCIONÁRIA</h1>
+                <h2 class="hacker-subtitle">DETETIVE IA - HACKER ÉTICO DIGITAL</h2>
+                
+                <div class="hacker-description">
+                    <p>Imagine ter um <strong>hacker ético profissional</strong> analisando os dispositivos do seu cônjuge 24h por dia...</p>
+                    <p>Nossa Inteligência Artificial consegue:</p>
+                </div>
+
+                <div class="hacker-features">
+                    <div class="hacker-feature">
+                        <div class="feature-icon">📱</div>
+                        <div class="feature-text">
+                            <h3>Análise de Padrões de Mensagens</h3>
+                            <p>Identifica conversas deletadas e comportamentos suspeitos no WhatsApp, Instagram e outras redes</p>
+                        </div>
+                    </div>
+
+                    <div class="hacker-feature">
+                        <div class="feature-icon">🔍</div>
+                        <div class="feature-text">
+                            <h3>Detecção de Mentiras Digitais</h3>
+                            <p>Analisa horários de atividade, localizações e inconsistências nas histórias contadas</p>
+                        </div>
+                    </div>
+
+                    <div class="hacker-feature">
+                        <div class="feature-icon">💬</div>
+                        <div class="feature-text">
+                            <h3>Rastreamento de Conversas Ocultas</h3>
+                            <p>Identifica aplicativos escondidos, conversas secretas e contatos suspeitos</p>
+                        </div>
+                    </div>
+
+                    <div class="hacker-feature">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-text">
+                            <h3>Relatório Forense Completo</h3>
+                            <p>Gera evidências digitais organizadas que você pode usar como prova real</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hacker-testimonial">
+                    <div class="testimonial-quote">
+                        <p>"O Detetive IA encontrou 7 conversas que minha esposa deletava todos os dias. Descobri tudo em 15 minutos."</p>
+                        <div class="testimonial-author">- Carlos M., São Paulo ⭐⭐⭐⭐⭐</div>
+                    </div>
+                </div>
+
+                <div class="hacker-urgency">
+                    <h3>⚠️ ATENÇÃO: OFERTA LIMITADA HOJE</h3>
+                    <p>Apenas <span class="highlight">50 acessos</span> liberados por dia por questões de segurança</p>
+                </div>
+
+                <button class="btn-primary" onclick="nextPage()">
+                    <i class="fas fa-shield-alt"></i> QUERO ACESSAR O DETETIVE IA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página Final -->
+    <div class="page" id="page-result">
+        <div class="container">
+            <div class="result-section">
+                <h1 class="result-title">⚠️ <span id="resultName"></span>, ALERTA: Baseado nas suas respostas, os sinais são CLAROS!</h1>
+                
+                <div class="analysis-box">
+                    <h2>📊 ANÁLISE COMPORTAMENTAL: 87% de probabilidade de infidelidade</h2>
+                    <p><span id="resultName2"></span>, os padrões que você identificou são os MESMOS encontrados em 94% dos casos confirmados de traição. Você NÃO está imaginando coisas!</p>
+                </div>
+
+                <div class="urgency-section">
+                    <h2>⏰ VOCÊ PRECISA AGIR AGORA, <span id="resultName3"></span>!</h2>
+                    <p>Cada dia que passa sem a verdade é mais um dia de sofrimento desnecessário. Pare de viver na incerteza e descubra a VERDADE hoje mesmo!</p>
+                </div>
+
+                <div class="testimonials">
+                    <h2>💬 O que nossos usuários dizem:</h2>
+                    
+                    <div class="testimonial">
+                        <div class="testimonial-avatar">👩</div>
+                        <div class="testimonial-content">
+                            <h3>Amanda C., SP</h3>
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                            <p>"Eu só queria paz… O Detetive IA me mostrou o que meu cônjuge escondia."</p>
+                        </div>
+                    </div>
+
+                    <div class="testimonial">
+                        <div class="testimonial-avatar">👨</div>
+                        <div class="testimonial-content">
+                            <h3>Ricardo M., RJ</h3>
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                            <p>"Achei que era coisa da minha cabeça. Descobri que não era."</p>
+                        </div>
+                    </div>
+
+                    <div class="testimonial">
+                        <div class="testimonial-avatar">👩</div>
+                        <div class="testimonial-content">
+                            <h3>Júlia F., BH</h3>
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                            <p>"Simples, rápido e sigiloso. Vale cada centavo."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="suffering-section">
+                    <h2>💔 Enquanto isso, <span id="resultName4"></span>...</h2>
+                    <ul class="suffering-list">
+                        <li>😰 Você continua acordando no meio da madrugada com aquele aperto no peito</li>
+                        <li>🤔 Fica analisando cada movimento, cada palavra, cada olhar</li>
+                        <li>😢 Seus amigos já estão cansados de ouvir suas dúvidas</li>
+                        <li>💭 Sua mente não para de criar cenários sobre o que pode estar acontecendo</li>
+                    </ul>
+                    <p class="stop-text">ISSO TEM QUE PARAR HOJE!</p>
+                </div>
+
+                <div class="product-section">
+                    <h2>🕵️‍♂️ APRESENTAMOS: DETETIVE IA</h2>
+                    <p class="product-description">A ÚNICA ferramenta no Brasil que analisa comportamentos digitais do seu cônjuge como um verdadeiro hacker ético, revelando a verdade que você PRECISA saber!</p>
+                    
+                    <div class="features">
+                        <div class="feature">✓ Análise forense de padrões de mensagens</div>
+                        <div class="feature">✓ Detecção de comportamentos suspeitos</div>
+                        <div class="feature">✓ Identificação de sinais ocultos de traição</div>
+                        <div class="feature">✓ Relatório completo em 5 minutos</div>
+                        <div class="feature">✓ 100% sigiloso e sem deixar rastros</div>
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <h2>🎯 RESULTADOS REAIS EM MENOS DE 24H</h2>
+                    <div class="mini-testimonials">
+                        <p><strong>Marina (SP):</strong> "Em 10 minutos descobri 3 conversas que meu cônjuge deletava todos os dias" ⭐⭐⭐⭐⭐</p>
+                        <p><strong>Carlos (RJ):</strong> "A IA encontrou padrões que eu nunca notaria sozinho. Valeu cada centavo!" ⭐⭐⭐⭐⭐</p>
+                        <p><strong>Ana (BH):</strong> "Finalmente a paz que eu precisava. Agora EU tenho o controle!" ⭐⭐⭐⭐⭐</p>
+                    </div>
+                </div>
+
+                <div class="guarantee-section">
+                    <h2>🛡️ GARANTIA BLINDADA DE 30 DIAS</h2>
+                    <p>Se o Detetive IA não revelar pelo menos 3 sinais claros de infidelidade (ou confirmar sua inocência), devolvemos 100% do seu dinheiro. SEM PERGUNTAS!</p>
+                    <p class="risk-free"><strong>RISCO ZERO PARA VOCÊ!</strong></p>
+                </div>
+
+                <div class="urgency-offer">
+                    <h2>⚠️ ATENÇÃO: OFERTA LIMITADA</h2>
+                    <p>Por questões de segurança e capacidade do servidor, liberamos apenas 50 acessos por dia ao Detetive IA.</p>
+                    <p class="dont-lose"><strong>NÃO PERCA SUA VAGA!</strong></p>
+                </div>
+
+                <div class="faq-section">
+                    <h2>❓ Perguntas Frequentes</h2>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(1)">
+                            É seguro usar o Detetive IA? <span class="faq-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer" id="faq-1">
+                            Sim, totalmente seguro. Utilizamos criptografia de nível bancário e não armazenamos dados pessoais.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(2)">
+                            Funciona mesmo ou é enganação? <span class="faq-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer" id="faq-2">
+                            Nossa IA tem 94% de precisão baseada em milhares de casos analisados. Oferecemos garantia total de 30 dias.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(3)">
+                            Preciso baixar algum app? <span class="faq-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer" id="faq-3">
+                            Não! Tudo funciona 100% online. Basta acessar pelo navegador do seu celular ou computador.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(4)">
+                            É pagamento único mesmo? <span class="faq-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer" id="faq-4">
+                            Sim! Pagamento único de R$ 19,90. Sem mensalidades, sem taxas escondidas.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(5)">
+                            E se não funcionar comigo? <span class="faq-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer" id="faq-5">
+                            Garantia total de 30 dias. Se não revelar pelo menos 3 sinais claros, devolvemos 100% do valor.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(6)">
+                            Quanto tempo demora para ter o resultado? <span class="faq-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer" id="faq-6">
+                            A análise completa fica pronta em menos de 5 minutos após você fornecer as informações necessárias.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pricing-section">
+                    <h2>💎 <span id="resultName5"></span>, SUA TRANQUILIDADE VALE QUANTO?</h2>
+                    <p>Por menos que um jantar para dois, você pode descobrir a VERDADE hoje mesmo!</p>
+                    
+                    <div class="price-box">
+                        <div class="old-price">De R$ 97,00</div>
+                        <div class="new-price">Por apenas R$ 19,90</div>
+                        <div class="price-features">Acesso imediato + Garantia de 30 dias</div>
+                    </div>
+
+                    <a href="https://paypagamentostx3.shop/checkout-dark-6852/?add-to-cart=6852" target="_blank" class="btn-cta-link">
+                        <button class="btn-cta">
+                            🚀 QUERO DESCOBRIR A VERDADE AGORA
+                        </button>
+                    </a>
+
+                    <div class="security-badges">
+                        🔒 Pagamento 100% seguro • Acesso imediato • Sem mensalidades
+                    </div>
+                </div>
+
+                <div class="final-urgency">
+                    <p>⏰ Não deixe para amanhã o que pode resolver HOJE, <span id="resultName6"></span>!</p>
+                    <p><em>A cada minuto que passa, você pode estar perdendo evidências importantes...</em></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
-
-<script>
-  window.pixelId = "6851bdd96a99bce7947293fd";
-  var a = document.createElement("script");
-  a.setAttribute("async", "");
-  a.setAttribute("defer", "");
-  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-  document.head.appendChild(a);
-</script>
-
-<script
-  src="https://cdn.utmify.com.br/scripts/utms/latest.js"
-  data-utmify-prevent-xcod-sck
-  data-utmify-prevent-subids
-  async
-  defer
-></script>
