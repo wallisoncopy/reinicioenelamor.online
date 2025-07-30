@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RaspeBet - Raspadinha Online | Ganhe Prêmios Incríveis</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Principal -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-crown"></i>
+                <span>RaspeBet</span>
+            </div>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <i class="fas fa-trophy"></i>
+                    <span>R$ 2.847.590 pagos hoje</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <span>12.847 jogadores online</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner Principal -->
+    <section class="hero-banner">
+        <div class="hero-content">
+            <h1>RASPE E GANHE!</h1>
+            <p>Prêmios de até R$ 100.000 te esperando!</p>
+            <div class="hero-prizes">
+                <div class="prize-item">📱 iPhone 15 Pro</div>
+                <div class="prize-item">🚗 Carro 0KM</div>
+                <div class="prize-item">🏍️ Moto Esportiva</div>
+                <div class="prize-item">💰 R$ 50.000</div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="floating-prizes">
+                <div class="floating-prize prize-1">📱</div>
+                <div class="floating-prize prize-2">🚗</div>
+                <div class="floating-prize prize-3">🏍️</div>
+                <div class="floating-prize prize-4">💰</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Painel de Ganhadores -->
+    <section class="winners-section">
+        <div class="section-header">
+            <h2><i class="fas fa-trophy"></i> Últimos Ganhadores</h2>
+            <span class="live-indicator">🔴 AO VIVO</span>
+        </div>
+        <div class="winners-ticker">
+            <div class="ticker-content" id="winnersTicker">
+                <!-- Os ganhadores serão inseridos via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Container principal do jogo -->
+    <div class="game-container">
+        <!-- Tela de Pagamento PIX -->
+        <div id="paymentScreen" class="payment-screen">
+            <div class="payment-content">
+                <div class="payment-header">
+                    <h2>💳 Pague para Jogar</h2>
+                    <p>Escolha o valor e pague via PIX para liberar sua raspadinha</p>
+                </div>
+                
+                <div class="payment-options">
+                    <div class="payment-option" data-value="5">
+                        <div class="option-header">
+                            <span class="price">R$ 5,00</span>
+                            <span class="badge">Básico</span>
+                        </div>
+                        <div class="option-details">
+                            <div class="chances">Chances: 1 em 10</div>
+                            <div class="max-prize">Prêmio máximo: R$ 1.000</div>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-option popular" data-value="10">
+                        <div class="option-header">
+                            <span class="price">R$ 10,00</span>
+                            <span class="badge popular-badge">Popular</span>
+                        </div>
+                        <div class="option-details">
+                            <div class="chances">Chances: 1 em 8</div>
+                            <div class="max-prize">Prêmio máximo: R$ 10.000</div>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-option" data-value="25">
+                        <div class="option-header">
+                            <span class="price">R$ 25,00</span>
+                            <span class="badge premium-badge">Premium</span>
+                        </div>
+                        <div class="option-details">
+                            <div class="chances">Chances: 1 em 5</div>
+                            <div class="max-prize">Prêmio máximo: R$ 50.000</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="pixPayment" class="pix-payment hidden">
+                    <div class="pix-header">
+                        <h3>🔐 Pagamento Seguro via PIX</h3>
+                        <div class="payment-timer">
+                            <i class="fas fa-clock"></i>
+                            <span id="timer">14:59</span>
+                        </div>
+                    </div>
+                    
+                    <div class="qr-container">
+                        <div class="qr-code">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" alt="QR Code PIX" id="qrCodeImage">
+                        </div>
+                        <div class="pix-info">
+                            <div class="pix-value">
+                                <strong>Valor: R$ <span id="pixValue">10,00</span></strong>
+                            </div>
+                            <div class="pix-instructions">
+                                <p>1. Abra o app do seu banco</p>
+                                <p>2. Escaneie o QR Code</p>
+                                <p>3. Confirme o pagamento</p>
+                                <p>4. Aguarde a confirmação</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pix-copy">
+                        <label>Ou copie o código PIX:</label>
+                        <div class="pix-code-container">
+                            <input type="text" id="pixCode" value="00020126580014BR.GOV.BCB.PIX013636cb5620-6f9e-4d4a-9f7b-abc123456789520400005303986540510.005802BR5925RASPEBET JOGOS ONLINE6009SAO PAULO62140510RPT240730630445E6" readonly>
+                            <button class="copy-btn" onclick="copyPixCode()">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-status">
+                        <div class="status-pending">
+                            <div class="loading-spinner"></div>
+                            <span>Aguardando pagamento...</span>
+                        </div>
+                    </div>
+                    
+                    <button class="simulate-payment-btn" onclick="simulatePayment()">
+                        🎮 Simular Pagamento (Teste)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Área do jogo -->
+        <div id="gameArea" class="game-area hidden">
+            <div class="game-header">
+                <h2>🎰 Sua Raspadinha de R$ <span id="gameValue">10,00</span></h2>
+                <div class="game-info">
+                    <div class="attempts-left">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>1 tentativa</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scratch-container">
+                <canvas id="scratchCanvas" width="350" height="200"></canvas>
+                <div id="prizeArea" class="prize-area">
+                    <div id="prizeContent" class="prize-content">
+                        <!-- Conteúdo do prêmio será inserido aqui -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <p class="progress-text">Continue raspando...</p>
+            </div>
+        </div>
+
+        <!-- Tela de resultado -->
+        <div id="resultScreen" class="result-screen hidden">
+            <div class="result-content">
+                <div class="celebration">🎉</div>
+                <h2 id="resultTitle">Parabéns!</h2>
+                <div id="resultPrize" class="result-prize"></div>
+                <p id="resultMessage" class="result-message"></p>
+                
+                <div class="result-actions">
+                    <button class="play-again-btn" onclick="resetForNewGame()">
+                        <i class="fas fa-redo"></i>
+                        Jogar Novamente
+                    </button>
+                    <button class="share-btn" onclick="shareResult()">
+                        <i class="fas fa-share"></i>
+                        Compartilhar
+                    </button>
+                </div>
+                
+                <div class="result-note">
+                    <small>💰 Prêmios são creditados automaticamente via PIX</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção de Estatísticas -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-info">
+                    <div class="stat-number">R$ 2.847.590</div>
+                    <div class="stat-label">Pagos hoje</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-info">
+                    <div class="stat-number">3.247</div>
+                    <div class="stat-label">Ganhadores hoje</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-info">
+                    <div class="stat-number">12.847</div>
+                    <div class="stat-label">Jogadores online</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-info">
+                    <div class="stat-number">87%</div>
+                    <div class="stat-label">Taxa de premiação</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>RaspeBet</h3>
+                <p>A maior plataforma de raspadinhas online do Brasil</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Suporte</h4>
+                <ul>
+                    <li><a href="#">Central de Ajuda</a></li>
+                    <li><a href="#">WhatsApp: (11) 99999-9999</a></li>
+                    <li><a href="#">Email: suporte@raspebet.com</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Segurança</h4>
+                <ul>
+                    <li><a href="#">🔒 Pagamentos Seguros</a></li>
+                    <li><a href="#">✅ Licenciado</a></li>
+                    <li><a href="#">🏆 Prêmios Garantidos</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 RaspeBet - Todos os direitos reservados. Jogue com responsabilidade.</p>
+            <p><small>⚠️ Maiores de 18 anos. Prêmios são simulados para entretenimento.</small></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
