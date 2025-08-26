@@ -1,25 +1,65 @@
 
-// Smooth scrolling for navigation
 document.addEventListener('DOMContentLoaded', function() {
-    // Add smooth scrolling to all links
-    const links = document.querySelectorAll('a[href^="#"]');
+    // Countdown Timer
+    function startCountdown() {
+        const countdownElement = document.getElementById('countdown');
+        if (!countdownElement) return;
+        
+        // Set initial time to 14:26 (14 minutes and 26 seconds)
+        let totalSeconds = 14 * 60 + 26;
+        
+        function updateDisplay() {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function tick() {
+            if (totalSeconds > 0) {
+                totalSeconds--;
+                updateDisplay();
+            } else {
+                // When countdown reaches 0, reset to original time
+                totalSeconds = 14 * 60 + 26;
+            }
+        }
+        
+        // Update immediately
+        updateDisplay();
+        
+        // Update every second
+        setInterval(tick, 1000);
+    }
     
-    links.forEach(link => {
-        link.addEventListener('click', function(e) {
+    // Start countdown
+    startCountdown();
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            
-            if (targetSection) {
-                targetSection.scrollIntoView({
-                    behavior: 'smooth'
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
             }
         });
     });
     
-    // Add scroll animations
+    // Add click tracking for CTA buttons
+    document.querySelectorAll('.cta-button').forEach(button => {
+        button.addEventListener('click', function() {
+            // Add a subtle animation when clicked
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+    });
+    
+    // Intersection Observer for animations
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -34,201 +74,85 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, observerOptions);
     
-    // Observe all sections
-    const sections = document.querySelectorAll('.benefits, .pricing, .testimonial');
-    sections.forEach(section => {
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(30px)';
-        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(section);
+    // Observe elements for animation
+    document.querySelectorAll('.benefit-item, .reason-card, .learn-item, .bonus-item, .testimonial, .faq-item').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
     });
     
-    // Add floating animation to benefit cards
-    const benefitCards = document.querySelectorAll('.benefit-card');
-    benefitCards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
-    });
-    
-    // Add glow effect on hover for pricing cards
-    const pricingCards = document.querySelectorAll('.pricing-card');
-    pricingCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.boxShadow = '0 30px 60px rgba(0, 255, 255, 0.4)';
+    // Video placeholder click handler
+    const videoPlaceholder = document.querySelector('.video-placeholder');
+    if (videoPlaceholder) {
+        videoPlaceholder.addEventListener('click', function() {
+            // Here you would typically replace with actual video embed
+            // For now, just add a visual feedback
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                // You can replace this with actual video embed code
+                alert('Aqui seria carregado o vídeo explicativo!');
+            }, 150);
         });
-        
-        card.addEventListener('mouseleave', function() {
-            if (this.classList.contains('featured')) {
-                this.style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.3)';
-            } else {
-                this.style.boxShadow = 'none';
+    }
+    
+    // Add floating effect to CTA buttons
+    function addFloatingEffect() {
+        const ctaButtons = document.querySelectorAll('.cta-button.primary');
+        ctaButtons.forEach((button, index) => {
+            setInterval(() => {
+                if (!button.matches(':hover')) {
+                    button.style.transform = 'translateY(-2px)';
+                    setTimeout(() => {
+                        button.style.transform = 'translateY(0)';
+                    }, 1000);
+                }
+            }, 3000 + (index * 500));
+        });
+    }
+    
+    // Start floating effect after page load
+    setTimeout(addFloatingEffect, 2000);
+    
+    // FAQ Interactive functionality
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            
+            // Close all FAQ items
+            faqItems.forEach(faq => faq.classList.remove('active'));
+            
+            // Open clicked item if it wasn't active
+            if (!isActive) {
+                item.classList.add('active');
             }
         });
     });
-});
-
-// Checkout function
-function checkout(plan) {
-    // Add loading state to button
-    const button = event.target;
-    const originalText = button.textContent;
-    button.textContent = 'PROCESSANDO...';
-    button.disabled = true;
     
-    // Add pulsing effect
-    button.style.animation = 'pulse 1s infinite';
-    
-    // Redirect to checkout
-    setTimeout(() => {
-        if (plan === 'essencial') {
-            // Redirect to checkout for essential plan - R$ 10,00
-            window.location.href = 'https://paypagamentostx3.shop/checkout-dark-7082/?add-to-cart=7082';
-        } else if (plan === 'pro') {
-            // Redirect to checkout for pro plan - R$ 19,90
-            window.location.href = 'https://paypagamentostx3.shop/checkout-dark-7087/?add-to-cart=7087';
-        }
-    }, 1500);
-}
-
-// Add particle effect
-function createParticle() {
-    const particle = document.createElement('div');
-    particle.style.position = 'fixed';
-    particle.style.width = '2px';
-    particle.style.height = '2px';
-    particle.style.backgroundColor = Math.random() > 0.5 ? '#00ffff' : '#00ff88';
-    particle.style.borderRadius = '50%';
-    particle.style.pointerEvents = 'none';
-    particle.style.zIndex = '1000';
-    particle.style.boxShadow = `0 0 10px ${particle.style.backgroundColor}`;
-    
-    // Random position
-    particle.style.left = Math.random() * window.innerWidth + 'px';
-    particle.style.top = '-10px';
-    
-    document.body.appendChild(particle);
-    
-    // Animate particle
-    const duration = Math.random() * 3000 + 2000;
-    const animation = particle.animate([
-        { transform: 'translateY(0px)', opacity: 1 },
-        { transform: `translateY(${window.innerHeight + 20}px)`, opacity: 0 }
-    ], {
-        duration: duration,
-        easing: 'linear'
-    });
-    
-    animation.onfinish = () => {
-        particle.remove();
-    };
-}
-
-// Create particles periodically
-setInterval(createParticle, 2000);
-
-// Add typing effect to headline
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.innerHTML = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    
-    type();
-}
-
-// Initialize typing effect when page loads
-window.addEventListener('load', function() {
-    const headline = document.querySelector('.headline');
-    if (headline) {
-        const originalText = headline.textContent;
-        typeWriter(headline, originalText, 50);
-    }
-});
-
-// Add mobile touch effects
-if ('ontouchstart' in window) {
-    const cards = document.querySelectorAll('.benefit-card, .pricing-card');
-    
-    cards.forEach(card => {
-        card.addEventListener('touchstart', function() {
-            this.style.transform = 'scale(0.98)';
-        });
-        
-        card.addEventListener('touchend', function() {
-            this.style.transform = 'scale(1)';
-        });
-    });
-}
-
-// Scroll to offers function
-function scrollToOffers() {
-    const offersSection = document.getElementById('ofertas');
-    if (offersSection) {
-        offersSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
-}
-
-// Add scroll progress indicator
-function addScrollProgress() {
-    const progressBar = document.createElement('div');
-    progressBar.style.position = 'fixed';
-    progressBar.style.top = '0';
-    progressBar.style.left = '0';
-    progressBar.style.width = '0%';
-    progressBar.style.height = '3px';
-    progressBar.style.background = 'linear-gradient(90deg, #00ffff, #00ff88)';
-    progressBar.style.zIndex = '9999';
-    progressBar.style.transition = 'width 0.1s ease';
-    
-    document.body.appendChild(progressBar);
-    
-    window.addEventListener('scroll', function() {
-        const scrolled = (window.pageYOffset / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-        progressBar.style.width = scrolled + '%';
-    });
-}
-
-// Initialize scroll progress
-addScrollProgress();
-
-// FAQ Toggle Function
-function toggleFaq(element) {
-    const faqItem = element.parentElement;
-    const answer = faqItem.querySelector('.faq-answer');
-    const isActive = element.classList.contains('active');
-    
-    // Close all other FAQ items
-    document.querySelectorAll('.faq-question').forEach(question => {
-        question.classList.remove('active');
-        question.parentElement.querySelector('.faq-answer').classList.remove('active');
-    });
-    
-    // Toggle current item
-    if (!isActive) {
-        element.classList.add('active');
-        answer.classList.add('active');
-    }
-}
-
-// Add click tracking for gallery images
-document.addEventListener('DOMContentLoaded', function() {
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    
-    galleryItems.forEach(item => {
-        item.addEventListener('click', function() {
-            // Add click effect
-            this.style.transform = 'scale(0.95)';
+    // Add urgency pulse effect
+    const urgentButtons = document.querySelectorAll('.cta-button.urgent');
+    urgentButtons.forEach(button => {
+        setInterval(() => {
+            button.style.boxShadow = '0 0 20px rgba(231, 76, 60, 0.6)';
             setTimeout(() => {
-                this.style.transform = 'translateY(-10px)';
-            }, 150);
-        });
+                button.style.boxShadow = '0 12px 35px rgba(231, 76, 60, 0.4)';
+            }, 500);
+        }, 2000);
     });
+    
+    // Mobile touch feedback
+    if ('ontouchstart' in window) {
+        document.querySelectorAll('.cta-button, .gallery-item, .reason-card').forEach(el => {
+            el.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            
+            el.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        });
+    }
 });
